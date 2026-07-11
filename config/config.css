@@ -1,0 +1,260 @@
+.config-body {
+  overflow: auto;
+  touch-action: auto;
+  user-select: auto;
+}
+
+.config-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 640px;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+}
+
+.config-main {
+  flex: 1;
+  padding: 0 1.5rem;
+}
+
+.config-section {
+  margin-bottom: 2rem;
+}
+
+.config-label {
+  display: block;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.config-help {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+
+.delay-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.config-input {
+  width: 5rem;
+  padding: 0.6rem 0.75rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.config-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.delay-unit {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.75rem 1rem;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  text-align: center;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  color: var(--text);
+}
+
+.upload-hint {
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+.layer-list {
+  list-style: none;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.layer-list:not(:empty) + .config-empty {
+  display: none;
+}
+
+.layer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: grab;
+  transition: border-color 0.15s, opacity 0.15s;
+}
+
+.layer-item:active {
+  cursor: grabbing;
+}
+
+.layer-item.dragging {
+  opacity: 0.4;
+}
+
+.layer-item.drag-over {
+  border-color: var(--accent);
+}
+
+.layer-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.layer-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.layer-name {
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.layer-position {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 0.15rem;
+}
+
+.layer-controls {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.layer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.layer-btn:hover {
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.layer-btn.remove:hover {
+  color: #e07070;
+  border-color: #e07070;
+}
+
+.layer-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.drag-handle {
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 0.15rem;
+  cursor: grab;
+}
+
+.config-empty {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--muted);
+  text-align: center;
+}
+
+.config-footer {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+}
+
+.config-status {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--accent);
+  min-height: 1.25rem;
+  padding: 0 1.5rem;
+}
+
+.config-status.error {
+  color: #e07070;
+}
+
+#saveBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+#saveBtn:disabled:hover {
+  background: var(--surface);
+  border-color: var(--border);
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warhol — Configure</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="config.css" />
+</head>
+<body class="config-body">
+  <div class="config-app">
+    <header class="header">
+      <h1>Configure</h1>
+      <p class="subtitle">Upload images, set their order, and choose the reveal delay</p>
+    </header>
+
+    <main class="config-main">
+      <section class="config-section">
+        <label class="config-label" for="delayInput">Delay between layers</label>
+        <p class="config-help">Seconds before each deeper layer becomes scratchable</p>
+        <div class="delay-input-row">
+          <input type="number" id="delayInput" class="config-input" min="1" max="300" value="20" />
+          <span class="delay-unit">seconds</span>
+        </div>
+      </section>
+
+      <section class="config-section">
+        <label class="config-label">Layer images</label>
+        <p class="config-help">Top of the list is scratched first. Bottom is the final revealed image.</p>
+
+        <label class="upload-zone" id="uploadZone" for="fileInput">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 16V4m0 0 8 4m-8-4-8 4" />
+            <path d="M4 18v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+          </svg>
+          <span>Tap to upload images</span>
+          <span class="upload-hint">JPEG, PNG, WebP — select multiple</span>
+        </label>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden />
+
+        <ul class="layer-list" id="layerList"></ul>
+        <p class="config-empty" id="emptyState">No images yet. Upload at least two to create a collage.</p>
+      </section>
+    </main>
+
+    <footer class="config-footer">
+      <a href="../" class="btn-secondary">Back to Reveal</a>
+      <button class="reset-btn" id="saveBtn" type="button" disabled>Save Configuration</button>
+    </footer>
+
+    <p class="config-status" id="statusMsg" role="status"></p>
+  </div>
+
+  <script src="../js/storage.js"></script>
+  <script src="config.js"></script>
+</body>
+</html>

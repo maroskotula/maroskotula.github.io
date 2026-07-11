@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Warhol — Reveal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <main class="stage" id="stage">
+      <div class="frame">
+        <div class="layer-stack" id="layerStack" aria-label="Scratchable painting"></div>
+        <div class="timer-ring" id="timerRing" aria-hidden="true">
+          <svg viewBox="0 0 36 36">
+            <circle class="timer-track" cx="18" cy="18" r="15.5" />
+            <circle class="timer-progress" id="timerProgress" cx="18" cy="18" r="15.5" />
+          </svg>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <button class="reset-btn" id="resetBtn" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
+        </svg>
+        Start Over
+      </button>
+    </footer>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
