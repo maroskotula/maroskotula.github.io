@@ -1,5 +1,6 @@
 const BRUSH_SIZE = 42;
-const BRUSH_SPACING = 0.35;
+const BRUSH_SPACING = 0.28;
+const BRUSH_BRISTLES = 18;
 
 const layerStack = document.getElementById("layerStack");
 const resetBtn = document.getElementById("resetBtn");
@@ -21,6 +22,7 @@ const state = {
   unlockedCount: 1,
   loaded: false,
   fromConfig: false,
+  lastBrushAngle: 0,
 };
 
 function getStackRect() {
@@ -73,22 +75,49 @@ function drawImageOnCanvas(ctx, img) {
   ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
 }
 
-function paintBrush(ctx, x, y, size) {
-  const radius = size / 2;
-  const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-  gradient.addColorStop(0, "rgba(0, 0, 0, 1)");
-  gradient.addColorStop(0.45, "rgba(0, 0, 0, 0.85)");
-  gradient.addColorStop(0.75, "rgba(0, 0, 0, 0.35)");
-  gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-
+function paintBrush(ctx, x, y, size, angle = 0) {
+  ctx.save();
   ctx.globalCompositeOperation = "destination-out";
+
+  const radius = size * 0.4;
+  const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+  gradient.addColorStop(0, "rgba(0, 0, 0, 0.3)");
+  gradient.addColorStop(0.65, "rgba(0, 0, 0, 0.12)");
+  gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
   ctx.fillStyle = gradient;
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, Math.PI * 2);
   ctx.fill();
+
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+
+  const brushWidth = size * 0.9;
+  const bristleLength = size * 0.75;
+
+  for (let i = 0; i < BRUSH_BRISTLES; i++) {
+    const t = BRUSH_BRISTLES > 1 ? i / (BRUSH_BRISTLES - 1) : 0.5;
+    const spread = (t - 0.5) * brushWidth;
+    const jitter = (Math.random() - 0.5) * size * 0.1;
+    const length = bristleLength * (0.7 + Math.random() * 0.45);
+    const lineWidth = 0.6 + Math.random() * 1.1;
+    const alpha = 0.5 + Math.random() * 0.5;
+    const bend = (Math.random() - 0.5) * size * 0.12;
+    const y0 = spread + jitter;
+
+    ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(-length / 2, y0);
+    ctx.quadraticCurveTo(bend, y0, length / 2, y0 + (Math.random() - 0.5) * size * 0.05);
+    ctx.stroke();
+  }
+
+  ctx.restore();
 }
 
-function interpolateBrush(ctx, from, to, size) {
+function interpolateBrush(ctx, from, to, size, angle) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const distance = Math.hypot(dx, dy);
@@ -97,7 +126,7 @@ function interpolateBrush(ctx, from, to, size) {
 
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    paintBrush(ctx, from.x + dx * t, from.y + dy * t, size);
+    paintBrush(ctx, from.x + dx * t, from.y + dy * t, size, angle);
   }
 }
 
@@ -186,15 +215,24 @@ function unlockNextLayer() {
   }
 }
 
-function eraseAtPoint(x, y) {
+function eraseAtPoint(x, y, angle) {
   for (let i = 0; i < state.unlockedCount; i++) {
-    paintBrush(state.contexts[i], x, y, BRUSH_SIZE);
+    paintBrush(state.contexts[i], x, y, BRUSH_SIZE, angle);
   }
 }
 
 function eraseAtLayers(from, to) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const distance = Math.hypot(dx, dy);
+  const angle = distance > 0.5 ? Math.atan2(dy, dx) : state.lastBrushAngle;
+
+  if (distance > 0.5) {
+    state.lastBrushAngle = angle;
+  }
+
   for (let i = 0; i < state.unlockedCount; i++) {
-    interpolateBrush(state.contexts[i], from, to, BRUSH_SIZE);
+    interpolateBrush(state.contexts[i], from, to, BRUSH_SIZE, angle);
   }
 }
 
@@ -204,7 +242,7 @@ function onPointerDown(event) {
   state.isDrawing = true;
   state.lastPoint = getPointerPos(event);
   startTimer();
-  eraseAtPoint(state.lastPoint.x, state.lastPoint.y);
+  eraseAtPoint(state.lastPoint.x, state.lastPoint.y, state.lastBrushAngle);
 }
 
 function onPointerMove(event) {
